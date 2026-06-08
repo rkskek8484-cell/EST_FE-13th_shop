@@ -73,6 +73,7 @@ detail_tab_menus.forEach((item, idx) => {
     });
 
     detail_tab_contents[idx].classList.add("active");
+
     console.log(detail_tab_contents[idx]);
   });
 });
