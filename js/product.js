@@ -59,22 +59,18 @@ function createContent(data) {
 const detail_tab_menus = document.querySelectorAll(".detail-tabs a");
 const detail_tab_contents = document.querySelectorAll(".detail-content");
 
-detail_tab_menus.forEach((item, idx) => {
-  item.addEventListener("click", e => {
+detail_tab_menus.forEach(m => {
+  m.addEventListener("click", e => {
     e.preventDefault();
-
-    detail_tab_menus.forEach(tm => {
-      tm.classList.remove("active");
+    detail_tab_menusforEach(m => {
+      m.classList.remove("active");
     });
-    item.classList.add("active");
-
-    detail_tab_contents.forEach(tc => {
-      tc.classList.remove("active");
+    m.classList.add("active");
+    detail_tab_contents.forEach(c => {
+      c.classList.remove("active");
     });
-
-    detail_tab_contents[idx].classList.add("active");
-
-    console.log(detail_tab_contents[idx]);
+    let target = m.getAttribute("href"); //#product-info
+    document.querySelector(target).classList.add("active");
   });
 });
 
