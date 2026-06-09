@@ -57,12 +57,12 @@ function createContent(data) {
 
 //상품 상세 tab
 const detail_tab_menus = document.querySelectorAll(".detail-tabs a");
-const detail_tab_contents = document.querySelectorAll(".detail-content");
+const detail_tab_contents = document.querySelectorAll(".tab-content .detail-content");
 
 detail_tab_menus.forEach(m => {
   m.addEventListener("click", e => {
     e.preventDefault();
-    detail_tab_menusforEach(m => {
+    detail_tab_menus.forEach(m => {
       m.classList.remove("active");
     });
     m.classList.add("active");
