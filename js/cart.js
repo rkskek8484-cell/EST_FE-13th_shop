@@ -1,6 +1,7 @@
 import { readCart, updateCartCount } from "./utils/common.js";
 
 updateCartCount();
+const cartList = document.querySelector(".cart-list");
 const cart = readCart();
 console.log(cart);
 
@@ -17,7 +18,7 @@ const cartHTML = cart.map(
               <div class="cart-item-info">
                 <h2>${p.title}</h2>
                 <p>${p.brand} | 블랙</p>
-                <strong>189,000원</strong>
+                <strong>$${p.price}</strong>
               </div>
               <div class="quantity-box" aria-label="수량">
                 <button type="button" aria-label="수량 줄이기">-</button>
@@ -29,4 +30,4 @@ const cartHTML = cart.map(
     `,
 );
 
-document.querySelector(".cart-list").innerHTML = cartHTML.join("");
+cartList.innerHTML += cartHTML.join("");
