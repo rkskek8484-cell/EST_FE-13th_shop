@@ -10,7 +10,7 @@ const totalAmount = document.querySelector(".order-total strong");
 
 updateCartCount();
 
-const cart = readCart();
+let cart = readCart();
 let cartHTML = [];
 
 //상품 개수 반영
@@ -27,8 +27,8 @@ function updateTotalAmount() {
 }
 updateTotalAmount();
 
-//이벤트
-cartList.addEventListner("click", e => {
+//이벤트 (수량 변경, 삭제 버튼)
+cartList.addEventListener("click", e => {
   const cartItem = e.target.closest(".cart-item");
   if (!cartItem) return;
   const id = Number(cartItem.dataset.id);
@@ -60,7 +60,29 @@ cartList.addEventListner("click", e => {
   }
 });
 
+//이벤트 (체크 시)
+cartList.addEventListener("change", e => {
+  if (e.target.matches(".cart-item input")) {
+    updateSelectState();
+  }
+});
+
+function updateSelectState() {
+  const checkboxes = getCheckBoxes();
+  const checkedCount = checkboxes.filter(checkbox => checkbox.checked).length;
+  console.log(checkedCount);
+  selectAllText.textContent = `전체선택 (${checkedCount}/${checkboxes.length})`;
+  //모두 체크시, 전체 선택 부분 체크 true
+  selectAll.querySelector("input").checked = checkedCount > 0 && checkedCount === checkboxes.length;
+}
+
 function renderCart() {
+  //기존 항목 제거
+  cartList.querySelectorAll(".cart-item").forEach(el => {
+    el.remove();
+  });
+  cartHTML = [];
+
   console.log(cart);
   if (cart.length === 0) {
     cartHTML.push(
@@ -100,5 +122,39 @@ function renderCart() {
 
   //cartList.innerHTML += cartHTML.join("");
   cartList.insertAdjacentHTML("beforeend", cartHTML.join(""));
+  updateSelectState();
 }
 renderCart();
+
+function saveCart() {
+  writeCart(cart);
+  updateCartCount();
+  updateTotalAmount();
+  updateCartCountFx();
+}
+
+//선택 삭제
+selectDeleteBtn.addEventListener("click", () => {
+  const checkboxes = getCheckBoxes();
+  const checkedIds = checkboxes
+    .filter(checkbox => checkbox.checked)
+    .map(checkbox => Number(checkbox.closest(".cart-item").dataset.id));
+  if (checkedIds.length === 0) return;
+  cart = cart.filter(item => !checkedIds.includes(item.id));
+
+  saveCart();
+  renderCart();
+});
+function getCheckBoxes() {
+  return [...cartList.querySelectorAll(".cart-item input")];
+}
+
+selectAll.querySelector("input").addEventListener("change", e => {
+  const checkboxes = getCheckBoxes();
+  if (e.target.checked) {
+    checkboxes.forEach(checkbox => (checkbox.checked = true));
+  } else {
+    checkboxes.forEach(checkbox => (checkbox.checked = false));
+  }
+  updateSelectState();
+});
