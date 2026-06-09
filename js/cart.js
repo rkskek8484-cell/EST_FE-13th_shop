@@ -9,48 +9,9 @@ const productAmount = document.querySelector(".order-row strong");
 const totalAmount = document.querySelector(".order-total strong");
 
 updateCartCount();
+
 const cart = readCart();
-console.log(cart);
 let cartHTML = [];
-if (cart.length === 0) {
-  cartHTML.push(
-    `<article>
-  장바구니가 비어있습니다.
-</article>`,
-  );
-} else {
-  cartHTML = cart.map(
-    item =>
-      `<article class="cart-item" data-id="${item.id}">
-        <label class="item-check">
-          <input type="checkbox"/>               
-        </label>    
-  
-        <div class="cart-thumb">
-          <img
-            src="${item.thumb}"
-            alt="${item.title}"
-          />
-        </div>
-        <div class="cart-item-info">
-          <h2>${item.title}</h2>
-          <p>브랜드명 | ${item.brand}</p>
-          <strong>$${item.price}</strong>
-        </div>
-        <div class="quantity-box" aria-label="수량">
-          <button class="minusBtn" type="button" aria-label="수량 줄이기">-</button>
-          <span>${item.qty}</span>
-          <button class="plusBtn" type="button" aria-label="수량 늘리기">+</button>
-        </div>
-        <button type="button" class="remove-item" aria-label="${item.title} 삭제"></button>
-      </article>
-    `,
-  );
-}
-
-cartList.innerHTML += cartHTML.join("");
-
-const cartItems = cartList.querySelectorAll("article");
 
 //상품 개수 반영
 function updateCartCountFx() {
@@ -98,3 +59,46 @@ cartList.addEventListner("click", e => {
     return;
   }
 });
+
+function renderCart() {
+  console.log(cart);
+  if (cart.length === 0) {
+    cartHTML.push(
+      `<article>
+  장바구니가 비어있습니다.
+</article>`,
+    );
+  } else {
+    cartHTML = cart.map(
+      item =>
+        `<article class="cart-item" data-id="${item.id}">
+        <label class="item-check">
+          <input type="checkbox"/>               
+        </label>    
+  
+        <div class="cart-thumb">
+          <img
+            src="${item.thumb}"
+            alt="${item.title}"
+          />
+        </div>
+        <div class="cart-item-info">
+          <h2>${item.title}</h2>
+          <p>브랜드명 | ${item.brand}</p>
+          <strong>$${item.price}</strong>
+        </div>
+        <div class="quantity-box" aria-label="수량">
+          <button class="minusBtn" type="button" aria-label="수량 줄이기">-</button>
+          <span>${item.qty}</span>
+          <button class="plusBtn" type="button" aria-label="수량 늘리기">+</button>
+        </div>
+        <button type="button" class="remove-item" aria-label="${item.title} 삭제"></button>
+      </article>
+    `,
+    );
+  }
+
+  //cartList.innerHTML += cartHTML.join("");
+  cartList.insertAdjacentHTML("beforeend", cartHTML.join(""));
+}
+renderCart();
